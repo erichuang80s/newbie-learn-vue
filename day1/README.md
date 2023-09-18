@@ -70,15 +70,15 @@ CDN安裝
 > ❌永遠不要使用 body  作為 根節點，因為根節點是需多第三方插件會從body 注入DOM，會使你的DOM Tree 毀損，所以要自己建立的DOM作為根節點渲染。
 
 ## 範例練習
-[模板語法](https://cn.vuejs.org/guide/essentials/template-syntax.html)
-[響應式基礎](https://cn.vuejs.org/guide/essentials/reactivity-fundamentals.html)
-[Class 與 Style 綁定](https://cn.vuejs.org/guide/essentials/class-and-style.html)
-[計算屬性](https://cn.vuejs.org/guide/essentials/computed.html)
-[條件渲染](https://cn.vuejs.org/guide/essentials/conditional.html)
-[列表渲染](https://cn.vuejs.org/guide/essentials/list.html)
-[事件處理](https://cn.vuejs.org/guide/essentials/event-handling.html)
-[表單輸入綁定](https://cn.vuejs.org/guide/essentials/forms.html)
-[生命週期鉤子](https://cn.vuejs.org/guide/essentials/lifecycle.html)
+* [模板語法](https://cn.vuejs.org/guide/essentials/template-syntax.html)
+* [響應式基礎](https://cn.vuejs.org/guide/essentials/reactivity-fundamentals.html)
+* [Class 與 Style 綁定](https://cn.vuejs.org/guide/essentials/class-and-style.html)
+* [計算屬性](https://cn.vuejs.org/guide/essentials/computed.html)
+* [條件渲染](https://cn.vuejs.org/guide/essentials/conditional.html)
+* [列表渲染](https://cn.vuejs.org/guide/essentials/list.html)
+* [事件處理](https://cn.vuejs.org/guide/essentials/event-handling.html)
+* [表單輸入綁定](https://cn.vuejs.org/guide/essentials/forms.html)
+* [生命週期鉤子](https://cn.vuejs.org/guide/essentials/lifecycle.html)
 
 ## 範例練習2(example/vue.html)
 1. v-if、v-show、v-for、v-bind、computed、mounted
