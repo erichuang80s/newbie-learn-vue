@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Document</title>
+</head>
+<body class="bg-gray-50 antialiased text-gray-600">
+  <div id="app">
+      <div class="bg-white border-b fixed top-0 left-0 right-0">
+        <div class="relative">
+          <input
+            id="inputQuery"
+            type="text"
+            class="p-4 w-full focus:outline-none text-center"
+            oninput="app.queryInputHandler(event)"
+            placeholder="關鍵字輸入"
+          />
+          <div class="absolute top-1/2 right-0 -translate-y-1/2 mx-4">
+            <button class="w-[32px] h-[32px] text-sm p-2 hover:bg-gray-200 flex place-content-center rounded-full" onclick="app.clear()">
+              ╳
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-center py-6 gap-3 mt-[5rem]">
+        <button 
+          class="p-2 bg-white shadow rounded text-gray-600 font-medium"
+          :class="{'bg-blue-600 text-white': isCardMode}"
+          onclick="app.viewModeChange('card')"
+        >
+          card
+        </button>
+        <button 
+          class="p-2 bg-white shadow rounded text-gray-600 font-medium"
+          :class="{'bg-blue-600 text-white': isListMode}"
+          onclick="app.viewModeChange('list')"
+        >
+          list
+        </button>
+      </div>      
+      <main class="container px-4 md:px-0 mx-auto py-[5rem] text-gray-600 min-h-screen">
+        <div class="mb-2 text-xs" id="total"></div>
+        <div class="flex flex-wrap gap-4" id="photoContainer"></div>
+        <div v-else class="flex place-content-center hidden" id="emptyMessage">
+          找不到照片
+        </div>        
+      </main>
+  </div>
+  <footer class="bg-gray-200 p-4 text-gray-600 text-xs">
+    eric@gis.tw
+  </footer>  
+</body>
+<script>
+  (function() {
+    const root = document.getElementById('app')
+
+    const store = {
+      viewMode: '',
+      query: '',
+      photos: []
+    }
+
+    const view = {
+      inputQuery: root.querySelector('#inputQuery'),
+      totalEl: root.querySelector('#total'),
+      photoContainerEl: root.querySelector('#photoContainer'),
+      emptyMessageEl: root.querySelector('#emptyMessage'),
+    }
+
+    function fetchData() {
+      fetch('https://picsum.photos/v2/list?page=2&limit=30')
+        .then((res) => res.json())
+        .then((json) => {
+          store.photos = json
+          render()
+        })
+        .catch((err) => console.log(err))      
+    }
+
+    function classListToggle(array) {
+      return function(element) {
+        array.forEach(n => )
+      }
+    }
+
+    function render() {
+      const fragment = document.createDocumentFragment()
+      const filterPhotos = store.photos.filter(p => p.author.includes(store.query))
+
+      view.totalEl.textContent = `total ${filterPhotos.length}`
+      view.emptyMessageEl.classList.toggle('hidden', filterPhotos.length !== 0)
+      filterPhotos.forEach(photo => {
+        const {download_url, author} = photo
+        
+        const img = new Image()
+        const item = document.createElement('div')
+        item.className = 'bg-white rounded overflow-hidden shadow w-full md:w-[240px]'
+        img.loading = 'lazy'
+        img.src = download_url
+        img.alt = author
+        img.className = 'w-full h-[144px] object-cover'
+
+        const listClassList = ['flex', 'items-center', 'md:w-full', 'h-[88px]']
+        img.classList.toggle(...listClassList, store.viewMode === 'list')
+
+        item.appendChild(img)
+        fragment.appendChild(item)
+      })
+  
+      view.photoContainerEl.replaceChildren(fragment)
+    }
+
+    function init() {
+      fetchData()
+    }
+    
+    window.app = {
+      clear() {
+        view.inputQuery.value = ''
+        store.query = ''
+        render()
+      },
+      queryInputHandler(e) {
+        store.query = e.target.value
+        render()
+      },
+      init,
+      viewModeChange(type) {
+        store.viewMode = type
+        render()
+      }
+    }
+  })()
+
+  app.init()
+</script>
+</html>

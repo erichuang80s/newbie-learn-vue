@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>相簿練習</title>
+  </head>
+  <body class="bg-gray-50 antialiased text-gray-600">
+    <div id="app">
+      <div class="bg-white border-b fixed top-0 left-0 right-0">
+        <div class="relative">
+          <input
+            type="text"
+            v-model="query"
+            class="p-4 w-full focus:outline-none text-center"
+            placeholder="關鍵字輸入"
+          />
+          <div v-show="query" class="absolute top-1/2 right-0 -translate-y-1/2 mx-4">
+            <button class="w-[32px] h-[32px] text-sm p-2 hover:bg-gray-200 flex place-content-center rounded-full" @click="clear">
+              ╳
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="flex justify-center py-6 gap-3 mt-[5rem]">
+        <button 
+          class="p-2 shadow rounded text-gray-600 font-medium"
+          :class="{'bg-blue-600 text-white': isCardMode}"
+          @click="viewModeChange('card')"
+        >
+          card
+        </button>
+        <button 
+          class="p-2 shadow rounded text-gray-600 font-medium"
+          :class="{'bg-blue-600 text-white': isListMode}"
+          @click="viewModeChange('list')"
+        >
+          list
+        </button>
+      </div>
+      <main class="container px-4 md:px-0 mx-auto py-[5rem] text-gray-600 min-h-screen">
+        <div class="mb-2 text-xs">total {{filterPhotos.length}}</div>
+        <div v-if="filterPhotos.length" class="flex flex-wrap gap-4">
+          <div
+            v-for="photo in filterPhotos"
+            :key="photo.id"
+            class="bg-white rounded overflow-hidden shadow w-full md:w-[240px]"
+            :class="{
+              'flex items-center md:w-full h-[88px]': isListMode
+            }"
+          >
+            <img
+              :src="photo.download_url"
+              :alt="photo.author"
+              loading="lazy"
+              class="w-full h-[144px] object-cover"
+              :class="{
+                'w-[88px] h-[88px] bg-gray-900': isListMode
+              }"
+            />
+            <div class="p-4">
+              <div class="font-bold">{{ photo.author }}</div>
+              <div class="text-xs">{{photo.width}} × {{photo.height}}</div>
+            </div>
+          </div>
+        </div>
+        <div v-else class="flex place-content-center">
+          找不到照片
+        </div>
+      </main>
+      <footer class="bg-gray-200 p-4 text-gray-600 text-xs">
+        eric@gis.tw
+      </footer>
+    </div>
+  </body>
+  <script>
+    const { createApp } = Vue
+    const app = createApp({
+      data() {
+        return {
+          viewMode: 'card',
+          query: '',
+          photos: [],
+        }
+      },
+      mounted() {
+        this.fetchData()
+      },
+      computed: {
+        filterPhotos() {
+          return this.photos.filter((p) => p.author.includes(this.query))
+        },
+        isCardMode() {
+          return this.viewMode === 'card'
+        },
+        isListMode() {
+          return this.viewMode === 'list'
+        }
+      },
+      methods: {
+        fetchData() {
+          fetch('https://picsum.photos/v2/list?page=2&limit=30')
+            .then((res) => res.json())
+            .then((json) => (this.photos = json))
+            .catch((err) => console.log(err))
+        },
+        viewModeChange(mode) {
+          this.viewMode = mode
+        },
+        clear() {
+          this.query = ''
+        }
+      },
+    })
+
+    app.mount('#app')
+  </script>
+</html>
