@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <title>Document</title>
+  <style>
+    :root {
+      --p-basic: 1.25rem;
+    }
+    .card {
+      width: calc(100% / 6);
+      background-color: white;
+      border-radius: 12px;
+      filter: drop-shadow(4px 2px 14px rgba(0,0,0,.12));
+    }
+    .card__header {
+      padding: var(--p-basic);
+      border-bottom: solid 1px #eee;
+    }
+    .card__body {
+      padding: var(--p-basic);
+      min-height: 200px;
+    }
+    .flex {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .gap {
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- 有時候在切版測試畫面也可以這樣做，不用特地在 data 定義 -->
+    <div class="flex gap">
+      <div v-for="n in 10" class="card">
+        <div class="card__header">
+          Title-{{n}}
+        </div>
+        <div class="card__body">
+          .......content
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  Vue.createApp({
+    data() {
+      return {
+      
+      }
+    }
+  }).mount('#app')
+</script>
+</html>
