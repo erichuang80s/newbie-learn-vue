@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime/uno.global.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind.min.css">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <div class="container mx-auto py-6">
+      <div class="grid grid-flow-col gap-4">
+        <card title="Card Title">
+          <div>
+            ....
+          </div>
+        </card>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="/components/Card.js"></script>
+<script>
+  jss.default.setup(jssPresetDefault.default())
+  Vue.createApp({
+    components: {
+      Card
+    },
+  }).mount('#app')
+</script>
+</html>
