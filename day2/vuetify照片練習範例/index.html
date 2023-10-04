@@ -22,6 +22,7 @@
         label="關鍵字"
         prepend-icon="mdi-magnify"
         hide-details
+        :disabled="pending"
       >
       </v-text-field>
       <v-btn-toggle v-model="viewMode">
@@ -40,8 +41,8 @@
             </v-skeleton-loader>
           </v-col>
         </v-row>
-        <div v-if="isEmpty" class="d-flex justify-center align-center h-100">
-          <v-icon color="info" icon="$vuetify"></v-icon>
+        <div v-else-if="isEmpty" class="d-flex justify-center align-center h-100">
+          <v-icon color="grey-lighten-6" icon="mdi-emoticon-sad-outline"></v-icon>
           <span>找步到照片</span>
         </div>
         <v-row v-else justify="start">
