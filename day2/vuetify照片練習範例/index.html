@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.min.js'></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.3.19/dist/vuetify.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vuetify@3.3.19/dist/vuetify-labs.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@3.3.19/dist/vuetify.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify@3.3.19/dist/vuetify-labs.js"></script>
+  <title>相簿練習-vuetify</title>
+</head>
+<body>
+  <div id="app">
+    <v-toolbar density="compact" class="bg-primary">
+      <v-toolbar-title>PHOTOS</v-toolbar-title>
+      <v-text-field
+        v-model="keyword"
+        class="mr-auto"
+        width="122"
+        label="關鍵字"
+        prepend-icon="mdi-magnify"
+        hide-details
+      >
+      </v-text-field>
+      <v-btn-toggle v-model="viewMode">
+        <v-btn color="white" icon="mdi-view-grid" variant="plain" value="card"></v-btn>
+        <v-btn color="white" icon="mdi-view-sequential" variant="plain" value="list"></v-btn>
+      </v-btn-toggle>
+    </v-toolbar>
+    <v-container class="h-screen">
+      <v-fabe-transition mode="out-in">
+        <v-row v-if="pending">
+          <v-col v-for="n in 10" :key="n" cols="12" sm="6" lg="3">
+            <v-skeleton-loader
+              class="mx-auto border"
+              type="image, list-item"
+            >
+            </v-skeleton-loader>
+          </v-col>
+        </v-row>
+        <div v-if="isEmpty" class="d-flex justify-center align-center h-100">
+          <v-icon color="info" icon="$vuetify"></v-icon>
+          <span>找步到照片</span>
+        </div>
+        <v-row v-else justify="start">
+          <v-col 
+            cols="12"
+            :sm="isListMode ? 12 : 6"
+            :lg="isListMode ? 12 : 3"
+            v-for="photo in filterPhotos"
+            :key="photo.id"
+          >
+            <v-card class="h-100" :class="{'d-flex align-center': isListMode}">
+              <v-img
+                :src="photo.download_url"
+                :lazy-src="`https://picsum.photos/id/${photo.id}/200/300?blur=10`"
+                class="flex-0-1"
+                :width="isListMode ? 144 : null"
+                height="144"
+                aspect-ratio="4/3"
+                cover
+              >
+                <template v-slot:placeholder>
+                  <div class="d-flex align-center justify-center fill-height">
+                    <v-progress-circular
+                      color="grey-lighten-4"
+                      indeterminate
+                    ></v-progress-circular>
+                  </div>                  
+                </template>
+              </v-img>
+              <v-card-text>
+                {{photo.author}}
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-fabe-transition>
+    </v-container>
+  </div>
+  <script src="./main.js"></script>
+</body>
+</html>
